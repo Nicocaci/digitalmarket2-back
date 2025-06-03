@@ -63,7 +63,7 @@ class UserController {
             res.cookie('access_token', token, {
                 httpOnly: false,
                 secure: true,         // ⬅️ false en localhost
-                sameSite: 'lax',       // ⬅️ Lax funciona bien en la mayoría de los casos sin requerir HTTPS
+                sameSite: 'none',       // ⬅️ Lax funciona bien en la mayoría de los casos sin requerir HTTPS
                 maxAge: 24 * 60 * 60 * 1000,
                 path: '/',
                 domain: ".railway.app",
@@ -82,7 +82,7 @@ class UserController {
         res.clearCookie('access_token', {
             httpOnly: false,
             secure: true,
-            sameSite: 'lax',
+            sameSite: 'none',
             domain: ".railway.app",
             path: "/"
         });
