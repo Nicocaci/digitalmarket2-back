@@ -24,7 +24,8 @@ mongoose.connect(process.env.MONGO_URL)
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors({
-    origin: "https://digitalmarket-front-virid.vercel.app",
+    origin: //"http://localhost:5173",
+            "https://digitalmarket-back-production.up.railway.app/",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
