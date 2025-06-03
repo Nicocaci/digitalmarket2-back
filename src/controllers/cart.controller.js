@@ -49,7 +49,7 @@ class CartController {
         const cid = req.params.cid;
         const pid = req.params.pid;
         const quantity = req.body.quantity || 1;
-        
+
         try {
             const addProduct = await CartService.addProductToCart(cid, pid, quantity);
             res.status(201).json(addProduct.products);
@@ -82,12 +82,12 @@ class CartController {
             res.status(201).json(updateProduct.products)
         } catch (error) {
             console.log(error.message);
-            
+
             res.status(500).json({ error: "Error interno del servidor" });
         }
     }
 
-    async updateCart(req,res){
+    async updateCart(req, res) {
         const cid = req.params.id;
         const products = req.body.products;
         try {
@@ -98,7 +98,7 @@ class CartController {
         }
     }
 
-    async deleteCart(req,res){
+    async deleteCart(req, res) {
         const cid = req.params.cid;
         try {
             const deleteCart = await CartService.deleteCart(cid);
@@ -107,18 +107,33 @@ class CartController {
             res.status(500).json({ error: "Error interno del servidor" });
         }
     }
-// En el controlador:
-async clearCart(req, res) {
-    const cid = req.params.cid;
-    try {
-        const updatedCart = await CartService.clearCartProducts(cid);
-        res.status(200).json(updatedCart);
-    } catch (error) {
-        console.error("Error al vaciar carrito:", error);
-        res.status(500).json({ error: "Error interno al vaciar carrito" });
+    // En el controlador:
+    async clearCart(req, res) {
+        const cid = req.params.cid;
+        try {
+            const updatedCart = await CartService.clearCartProducts(cid);
+            res.status(200).json(updatedCart);
+        } catch (error) {
+            console.error("Error al vaciar carrito:", error);
+            res.status(500).json({ error: "Error interno al vaciar carrito" });
+        }
     }
-}
 
+    async getCartByToken(req, res) {
+        try {
+            const cartId = req.user.cart; // viene del token decodificado
+
+            const cart = await CartModel.findById(cartId).populate("products.product");
+            if (!cart) {
+                return res.status(404).json({ message: "Carrito no encontrado" });
+            }
+
+            res.status(200).json(cart);
+        } catch (error) {
+            console.error("Error al obtener el carrito por token:", error);
+            res.status(500).json({ message: "Error interno del servidor" });
+        }
+    };
 
 }
 

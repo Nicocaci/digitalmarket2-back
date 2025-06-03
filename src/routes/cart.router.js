@@ -1,5 +1,6 @@
 import express from "express";
 import CartController from "../controllers/cart.controller.js";
+import { authMiddleware } from "../utils/authMiddleware.js";
 
 
 const router = express.Router();
@@ -9,6 +10,8 @@ router.post("/", CartController.createCart);
 router.get("/", CartController.getCart);
 
 router.get("/:id", CartController.getProductsCart);
+
+router.get("/mi-carrito", authMiddleware, CartController.getCartByToken);
 
 router.post("/:cid/productos/:pid", CartController.addProductToCart);
 
