@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = "virtualCode";
+const PRIVATE_KEY = "virtualCode";
 
 const generatetoken = (user) =>{
-    const token = jwt.sign(user, JWT_SECRET, {expiresIn:"24h"});
+    const token = jwt.sign(user, PRIVATE_KEY, {expiresIn:"24h"});
     return token
 }
 
