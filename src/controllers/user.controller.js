@@ -61,7 +61,7 @@ class UserController {
             console.log("TOKEN GENERADO:", token);
 
             res.cookie('access_token', token, {
-                httpOnly: true,
+                httpOnly: false,
                 secure: true,         // ⬅️ false en localhost
                 sameSite: 'none',       // ⬅️ Lax funciona bien en la mayoría de los casos sin requerir HTTPS
                 maxAge: 24 * 60 * 60 * 1000,
@@ -79,7 +79,7 @@ class UserController {
 
     async logOut(req, res) {
         res.clearCookie('access_token', {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: 'none',
             path: "/"
