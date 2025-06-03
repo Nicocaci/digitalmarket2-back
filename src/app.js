@@ -25,7 +25,8 @@ app.use('/uploads', express.static('uploads'));
 app.use(express.static("./src/public"));
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: //"http://localhost:5173"
+                "https://digitalmarket-front-virid.vercel.app",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
@@ -41,7 +42,8 @@ app.use("/api/usuario", userRouter);
 
 // Servidor escuchando
 // Iniciar servidor
+// Iniciar servidor
 const PORT = process.env.PORT || 8080;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
