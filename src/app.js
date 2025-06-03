@@ -23,16 +23,16 @@ mongoose.connect(process.env.MONGO_URL)
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
-app.use(express.static("./src/public"));
-app.use(cookieParser());
 app.use(cors({
-    origin: //"http://localhost:5173",
-                "https://digitalmarket-front-virid.vercel.app",
+    origin: "https://digitalmarket-front-virid.vercel.app",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
 }));
+app.use('/uploads', express.static('uploads'));
+app.use(express.static("./src/public"));
+app.use(cookieParser());
+
 
 app.get("/", (req,res)=> {
     res.send("Estamos On")
