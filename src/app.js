@@ -7,6 +7,8 @@ import mongoose from "mongoose";
 import productRouter from "./routes/products-router.js";
 import cartRouter from "./routes/cart.router.js";
 import userRouter from "./routes/user-router.js";
+import orderRouter from "./routes/order-router.js";
+import mercadoPagoRouter from "./routes/mercadoPago.js";
 
 dotenv.config();
 
@@ -25,7 +27,7 @@ app.use('/uploads', express.static('uploads'));
 app.use(express.static("./src/public"));
 app.use(cookieParser());
 app.use(cors({
-    origin: //"http://localhost:5173"
+    origin: //"http://localhost:5173",
                 "https://digitalmarket-front-virid.vercel.app",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -38,6 +40,8 @@ app.get("/", (req,res)=> {
 app.use("/api/productos", productRouter);
 app.use("/api/carrito", cartRouter);
 app.use("/api/usuario", userRouter);
+app.use("/api/orders", orderRouter);
+app.use('/api/mercado-pago', mercadoPagoRouter);
 
 
 // Servidor escuchando
