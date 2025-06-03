@@ -13,9 +13,6 @@ dotenv.config();
 const app = express();
 
 
-
-const PORT = process.env.PORT || 8080;
-
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log("✅ Conectado a MongoDB"))
@@ -43,6 +40,8 @@ app.use("/api/usuario", userRouter);
 
 
 // Servidor escuchando
-app.listen(PORT, () => {
+// Iniciar servidor
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
