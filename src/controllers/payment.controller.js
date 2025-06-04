@@ -30,7 +30,7 @@ export const createOrder = async (req, res) => {
                     email: req.body.email,
                 },
                 back_urls: {
-                    success: "https://www.google.com",
+                    success: "https://digitalmarket-back-production.up.railway.app/gracias",
                     failure: "https://www.google.com",
                     pending: "https://www.google.com"
                 },
