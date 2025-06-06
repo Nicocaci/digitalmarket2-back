@@ -51,6 +51,16 @@ class UserDAO{
             throw new Error(`Error interno del DAO ${error.message}`);
         }
     }
+
+    async obtenerUsuarios(){
+        try {
+            const usuarios = await UserModel.find();
+            if(!usuarios) throw new Error("No se encontro ningun usuario.");
+            return usuarios;
+        } catch (error) {
+            throw new Error(`Error interno del DAO ${error.message}`);
+        }
+    }
 }
 
 export default new UserDAO();

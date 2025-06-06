@@ -3,6 +3,8 @@ import express from "express";
 
 const router = express.Router();
 
+
+router.get("/", UserController.obtenerUsuarios)
 router.post("/registro", UserController.register);
 router.post("/login", UserController.login);
 router.post("/logout", UserController.logOut);

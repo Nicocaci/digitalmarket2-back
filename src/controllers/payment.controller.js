@@ -27,7 +27,9 @@ export const createOrder = async (req, res) => {
                 items,
                 payer: {
                     name: req.body.nombre,
+                    apellido: req.body.apellido,
                     email: req.body.email,
+
                 },
                 back_urls: {
                     success: "https://digitalmarket-back-production.up.railway.app/gracias",

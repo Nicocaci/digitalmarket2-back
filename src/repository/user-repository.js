@@ -44,6 +44,16 @@ class UserRepository {
             throw new Error(`Error interno del Repository ${error.message}`);
         }
     }
+
+    async obtenerUsuarios(){
+        try {
+            const usuarios = await UserDAO.obtenerUsuarios();
+            if(!usuarios) throw new Error("No se encontro ningun usuario.");
+            return usuarios;
+        } catch (error) {
+            throw new Error(`Error interno del Repository ${error.message}`);
+        }
+    }
 }
 
 export default new UserRepository();

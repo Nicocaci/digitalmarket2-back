@@ -66,7 +66,7 @@ class UserController {
                 sameSite: 'none',       // ⬅️ Lax funciona bien en la mayoría de los casos sin requerir HTTPS
                 maxAge: 24 * 60 * 60 * 1000,
                 path: '/',
-                domain: '.railway.app'
+                //domain: '.railway.app'
             });
 
             return res.status(201).json({
@@ -84,7 +84,7 @@ class UserController {
             secure: true,
             sameSite: 'none',
             path: "/",
-            domain: '.railway.app'
+            //domain: '.railway.app'
         });
         res.status(200).json({ message: "Logout exitoso" });
     }
@@ -115,6 +115,15 @@ class UserController {
         } catch (error) {
             res.status(500).json({ message: 'Error al actualizar usuario: ' + error.message });
         }
+    }
+
+    async obtenerUsuarios(req,res) {
+                try {
+                    const usuarios = await UserService.obtenerUsuarios();
+                    res.status(200).json(usuarios)
+                } catch (error) {
+                    res.status(500).json({ message: 'Error al actualizar usuario: ' + error.message });
+                }
     }
 
 }
