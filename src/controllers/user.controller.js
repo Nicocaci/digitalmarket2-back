@@ -58,7 +58,6 @@ class UserController {
                 direccion: usuario.direccion,
                 role: usuario.role
             });
-            console.log("TOKEN GENERADO:", token);
 
             res.cookie('access_token', token, {
                 httpOnly: false,
@@ -107,24 +106,44 @@ class UserController {
         const userId = req.params.id;
         const userData = req.body;
         try {
-            const usuarioActualizado = await UserService.updateUser(userData, userId);
+            const usuarioActualizado = await UserService.updateUser(userId, userData);
             if (!usuarioActualizado) {
                 res.status(404).json({ message: "Usuario no encontrado" })
             };
-            res.status(200).json(usuarioActualizado);
+            res.status(200).json({
+                message: 'Usuario actualizado con éxito',
+                user: usuarioActualizado
+            });
         } catch (error) {
             res.status(500).json({ message: 'Error al actualizar usuario: ' + error.message });
         }
     }
 
-    async obtenerUsuarios(req,res) {
-                try {
-                    const usuarios = await UserService.obtenerUsuarios();
-                    res.status(200).json(usuarios)
-                } catch (error) {
-                    res.status(500).json({ message: 'Error al actualizar usuario: ' + error.message });
-                }
+    async obtenerUsuarios(req, res) {
+        try {
+            const usuarios = await UserService.obtenerUsuarios();
+            res.status(200).json(usuarios)
+        } catch (error) {
+            res.status(500).json({ message: 'Error al actualizar usuario: ' + error.message });
+        }
     }
+
+    async getUserById(req, res) {
+        const { id } = req.params;
+
+        try {
+            const user = await UserService.findUser({ _id: id });
+
+            if (!user) {
+                return res.status(404).json({ message: 'Usuario no encontrado' });
+            }
+
+            res.status(200).json(user);
+        } catch (error) {
+            console.error('Error al obtener usuario:', error.message);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    };
 
 }
 

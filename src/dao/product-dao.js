@@ -1,4 +1,5 @@
-import ProductModel from './models/product-model.js'
+import ProductModel from './models/product-model.js';
+import mongoose from 'mongoose';
 
 class ProductDAO {
         async createProduct(productData){
@@ -21,15 +22,20 @@ class ProductDAO {
         }
     }
 
-    async getProductById(productId){
-        try {
-            const productsId = await ProductModel.findById(productId);
-            if(!productsId) throw new Error("No existe producto con ese Id");
-            return productsId;
-        } catch (error) {
-            throw new Error('Error al obtener el producto:' + error.message);
+async getProductById(productId) {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            throw new Error("ID inválido");
         }
+
+        const product = await ProductModel.findById(productId);
+        if (!product) throw new Error("No existe producto con ese ID");
+
+        return product;
+    } catch (error) {
+        throw new Error('Error al obtener el producto: ' + error.message);
     }
+}
 
     async getProductByCategory(categoria){
         try {

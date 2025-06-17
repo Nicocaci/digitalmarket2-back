@@ -1,3 +1,4 @@
+import { User } from "mercadopago";
 import UserController from "../controllers/user.controller.js";
 import express from "express";
 
@@ -10,5 +11,5 @@ router.post("/login", UserController.login);
 router.post("/logout", UserController.logOut);
 router.delete("/:uId", UserController.deleteUser);
 router.put('/:id',UserController.updateUser);
-
+router.get('/:id', UserController.getUserById);
 export default router;

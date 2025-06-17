@@ -11,7 +11,7 @@ class UserService {
 
     async findUser(query) {
         try {
-            const user = await UserRepository.findOne(query);
+            const user = await UserRepository.findUser(query);
             return user;
         } catch (error) {
             throw new Error(`Error interno del Service ${error.message}`);
