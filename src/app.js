@@ -25,7 +25,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors({
     origin: //"http://localhost:5173",
-            "https://digitalmarket-back-production.up.railway.app",
+            "https://www.digitalshopok.com",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
