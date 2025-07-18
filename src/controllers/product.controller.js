@@ -3,7 +3,7 @@ import ProductService from '../service/product.service.js';
 
 class ProductController {
     async createProduct(req, res) {
-        const {nombre, categoria, imagen, precio, stock } = req.body;
+        const {nombre, categoria, imagen, precio, descripcion } = req.body;
         const imagenes = req.files?.imagen?.map(file => file.filename) || [];
         try {
             const nuevoProducto = await ProductModel.create({
@@ -11,7 +11,7 @@ class ProductController {
                 categoria,
                 imagen: imagenes,
                 precio,
-                stock
+                descripcion
             })
             res.status(201).json({ message: "Producto creado correctamente", nuevoProducto });
         } catch (error) {
