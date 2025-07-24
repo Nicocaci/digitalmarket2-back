@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
     },
     categoria: {
         type: String,
-        required:true,
+        required: true,
     },
     imagen: {
         type: [String],
@@ -17,9 +17,13 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    peso: {
+        type: Number,
+        required: true,
+    },
     descripcion: {
         type: String,
-        required:true,
+        required: true,
     }
 });
 
