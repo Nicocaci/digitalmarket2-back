@@ -1,9 +1,11 @@
 import ProductModel from '../dao/models/product-model.js';
 import ProductService from '../service/product.service.js';
+import fs from 'fs';
+import path from 'path';
 
 class ProductController {
     async createProduct(req, res) {
-        const {nombre, categoria, imagen, precio, peso, descripcion } = req.body;
+        const { nombre, categoria, imagen, precio, peso, descripcion } = req.body;
         const imagenes = req.files?.imagen?.map(file => file.filename) || [];
         try {
             const nuevoProducto = await ProductModel.create({
@@ -65,11 +67,36 @@ class ProductController {
 
     async updateProduct(req, res) {
         const productId = req.params.id;
-        const productData = req.body;
+        const data = req.body;
+
         try {
-            const productUpdate = await ProductService.updateProduct(productId, productData);
+            // Obtener producto actual
+            const productoActual = await ProductModel.findById(productId);
+            if (!productoActual) {
+                return res.status(404).json({ message: 'Producto no encontrado' });
+            }
+
+            // Si se subió una imagen nueva
+            if (req.file) {
+                const nuevaImagen = req.file.filename;
+                data.imagen = [nuevaImagen]; // tu modelo usa array
+
+                // Eliminar imagen anterior del disco
+                if (productoActual.imagen?.[0]) {
+                    const rutaAnterior = path.join('uploads', productoActual.imagen[0]);
+                    if (fs.existsSync(rutaAnterior)) {
+                        fs.unlinkSync(rutaAnterior);
+                    }
+                }
+            }
+
+            // Actualizar el producto con los datos nuevos
+            await ProductService.updateProduct(productId, data);
+
             res.json({ message: "Producto actualizado correctamente" });
+
         } catch (error) {
+            console.error("Error al actualizar producto:", error);
             res.status(500).json({ error: "Error interno del controlador de productos" });
         }
     }

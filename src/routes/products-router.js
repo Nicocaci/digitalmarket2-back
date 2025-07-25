@@ -17,7 +17,8 @@ router.get("/:id", ProductController.getProductById);
 
 router.get("/categoria/:id", ProductController.getProductByCategory);
 
-router.put("/:id", ProductController.updateProduct);
+router.put("/:id", upload.single('imagen'), ProductController.updateProduct);
+
 
 router.delete("/:id", ProductController.deleteProduct);
 
