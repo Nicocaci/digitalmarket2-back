@@ -7,29 +7,39 @@ dotenv.config();
 
 
 class OrderController {
-async crearOrden(req, res) {
-    try {
-        const token = req.cookies?.access_token;
-        if (!token) {
-            return res.status(401).json({ mensaje: 'Token no encontrado en cookies' });
+    async crearOrden(req, res) {
+        try {
+            let userId = null;
+            const token = req.cookies?.access_token;
+
+            if (token) {
+                try {
+                    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+                    userId = decoded._id;
+                    console.log("✅ Token válido. Usuario:", userId);
+                } catch (err) {
+                    console.warn("⚠️ Token inválido o expirado:", err.message);
+                    // NO devolvemos 401, seguimos sin userId
+                }
+            } else {
+                console.log("⚠️ No se recibió token. Orden sin usuario logueado.");
+            }
+
+            const datos = {
+                ...req.body,
+                userId, // puede ser null
+            };
+
+            console.log("📦 Creando orden con datos:", datos);
+
+            const orden = await OrderService.crearOrden(datos);
+            res.status(201).json({ message: 'Orden creada con éxito', orden });
+        } catch (error) {
+            console.error('❌ Error al crear orden:', error.message, error);
+            res.status(500).json({ mensaje: 'Error interno del servidor', error: error.message });
         }
-
-        // Decodificás el token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        // Le agregás el userId decodificado a la orden
-        const datos = {
-            ...req.body,
-            userId: decoded._id,
-        };
-
-        const orden = await OrderService.crearOrden(datos);
-        res.status(201).json({ message: 'Orden creada con éxito', orden });
-    } catch (error) {
-        console.error('Error al crear orden:', error);
-        res.status(500).json({ mensaje: 'Error interno del servidor' });
     }
-}
+
 
     async obtenerOrdenesPorUsuarios(req, res) {
         try {
@@ -42,7 +52,7 @@ async crearOrden(req, res) {
         }
     }
 
-    async obtenerTodasLasOrdenes(req,res) {
+    async obtenerTodasLasOrdenes(req, res) {
         try {
             const ordenes = await OrderService.obtenerTodasLasOrdenes();
             res.status(200).json(ordenes)
