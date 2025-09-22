@@ -65,7 +65,7 @@ class UserController {
                 sameSite: 'none',       // ⬅️ Lax funciona bien en la mayoría de los casos sin requerir HTTPS
                 maxAge: 24 * 60 * 60 * 1000,
                 path: '/',
-                domain: '.digitalshopok.com'
+                //domain: '.digitalshopok.com'
             });
 
             return res.status(201).json({
@@ -83,7 +83,7 @@ class UserController {
             secure: true,
             sameSite: 'none',
             path: "/",
-            domain: '.digitalshopok.com'
+            //domain: '.digitalshopok.com'
         });
         res.status(200).json({ message: "Logout exitoso" });
     }
@@ -124,7 +124,7 @@ class UserController {
             const usuarios = await UserService.obtenerUsuarios();
             res.status(200).json(usuarios)
         } catch (error) {
-            res.status(500).json({ message: 'Error al actualizar usuario: ' + error.message });
+            res.status(500).json({ message: 'Error al traer usuario: ' + error.message });
         }
     }
 
