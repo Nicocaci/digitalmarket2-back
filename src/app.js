@@ -13,6 +13,9 @@ import mercadoPagoRouter from "./routes/mercadoPago.js";
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 8080;
+const allowedOrigins = ["http://localhost:5173", "https://www.digitalshopok.com", "https://digitalshopok.com"]
+
 
 
 // Conectar a MongoDB
@@ -23,13 +26,22 @@ mongoose.connect(process.env.MONGO_URL)
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-app.use(cors({
-    origin: //"http://localhost:5173",
-            "digitalshopok.com",
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Permitir requests sin origin (por ejemplo, Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("CORS no permitido por este dominio"));
+      }
+    },
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
-}));
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  }),
+);
 app.use('/uploads', express.static('uploads'));
 app.use(express.static("./src/public"));
 app.use(cookieParser());
@@ -48,7 +60,7 @@ app.use('/api/mercado-pago', mercadoPagoRouter);
 // Servidor escuchando
 // Iniciar servidor
 // Iniciar servidor
-const PORT = process.env.PORT || 8080;
+
 app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
